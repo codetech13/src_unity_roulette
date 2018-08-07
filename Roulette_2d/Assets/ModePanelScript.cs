@@ -9,6 +9,7 @@ public class ModePanelScript : MonoBehaviour {
 
 	public void onClickMode1(){
 		mode1.SetActive (true);
-		//myPanel.SetActive (false);
+		myPanel.SetActive (false);
+		DemoTimer.instance.stopTimer = false;
 	}
 }

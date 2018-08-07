@@ -48,6 +48,7 @@ public class CircularMotion : MonoBehaviour {
 		if (RotateSpeed <= 0 && !runOnlyOnce) {
 			runOnlyOnce = true;
 			StartCoroutine(checkClosestPoint ());
+			RotateSpeed = 0;
 		}
 
 //		Debug.Log ("distance " + Vector3.Distance(transform.position, pointsList[0].transform.position));
@@ -71,7 +72,7 @@ public class CircularMotion : MonoBehaviour {
                 luckyNumber = pointsList[i].serialNumber;
 			}
 
-			Debug.Log ("point " + i + " temp is the closest point" + " distance " + 
+			Debug.LogError ("point " + i + " temp is the closest point" + " distance " + 
 				Vector3.Distance(pointsList[i].transform.position, transform.position) + "   cOunt ::: " +
                 pointsList[i].serialNumber);
 		}
@@ -80,31 +81,43 @@ public class CircularMotion : MonoBehaviour {
         GameButtonsHandler.instance.ClearLocalList();
         hud.SetText(luckyNumber, hud.betNo);
         hud.ActivateSpinBtn(hud.spinWheelBtn);
+		DemoTimer.instance.resetTimer ();
+		runOnlyOnce = false;
+		hud.gameState = GameState.DEFAULT;
 		Debug.Log ("point " + temp + " temp is the closest point" + "  Lucky Number  " + luckyNumber);
 	 }
-
+		
     private void FinalizeResult(int betNumber) {
         GameButtonsHandler.instance.setFinalBetNumber(luckyNumber);
         List<int> localKey = new List<int>(GameButtonsHandler.instance.betDictionary.Keys);
-        for (int i=0; i< localKey.Count; i++)
-        {
-            if (localKey[i] == betNumber)
-            {
-                for (int k = 0; k < GameButtonsHandler.instance.betDictionary[i].Count; k++)
-                {
-                    GameButtonsHandler.instance.AddUserAmount(GameButtonsHandler.instance.betDictionary[i][k]);
-                }
-            }
-            /*else
-            {
 
-                for (int k = 0; k < GameButtonsHandler.instance.betDictionary[i].Count; k++)
-                {
-                    GameButtonsHandler.instance.DeductUserAmount(GameButtonsHandler.instance.betDictionary[i][k]);
-                }
-
-            }*/
-
-        }
+		for (int i = 0; i < GameButtonsHandler.instance.betDictionary.Count; i++) {
+			for (int j = 0; j < GameButtonsHandler.instance.betDictionary [localKey [i]].Count; j++) {
+				if (betNumber == GameButtonsHandler.instance.betDictionary [localKey [i]] [j]) {
+					GameButtonsHandler.instance.AddUserAmount (localKey [i]);
+					Debug.Log ("add amount --> " + localKey[i]);
+				}
+			} 
+		}
+//        for (int i=0; i< localKey.Count; i++)
+//        {
+//            if (localKey[i] == betNumber)
+//            {
+//                for (int k = 0; k < GameButtonsHandler.instance.betDictionary[i].Count; k++)
+//                {
+//                    GameButtonsHandler.instance.AddUserAmount(GameButtonsHandler.instance.betDictionary[i][k]);
+//                }
+//            }
+//            /*else
+//            {
+//
+//                for (int k = 0; k < GameButtonsHandler.instance.betDictionary[i].Count; k++)
+//                {
+//                    GameButtonsHandler.instance.DeductUserAmount(GameButtonsHandler.instance.betDictionary[i][k]);
+//                }
+//
+//            }*/
+//
+//        }
     }
 }

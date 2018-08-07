@@ -57,7 +57,7 @@ MonoBehaviour:
   setPreviousAmount: 0
   betNumbersList: 
   betResultNumberList: 
-  userTotalAmount: 10000
+  userTotalAmount: 1000000000
   userTotalAmountOnBet: 0
   userBetAmountList: 
   isBetSelected: 0

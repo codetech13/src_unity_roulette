@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class GameHud : MonoBehaviour {
+	public static GameHud instance;
     public GameState gameState;
     public GameObject spinWheelBtn;
     public Text number;
@@ -13,8 +14,13 @@ public class GameHud : MonoBehaviour {
     public GameObject mainSPinButton;
     public GameObject mainImage;
 
+	public InputField userName;
+	public InputField passsword;
+	public GameObject logInSCreen;
+
     private void Awake()
     {
+		instance = this;
         gameState = GameState.DEFAULT;
         mainSPinButton.SetActive(false);
         if (spinWheelBtn.activeSelf)
@@ -78,6 +84,12 @@ public class GameHud : MonoBehaviour {
         gameState = GameState.RUNNING;
         mainSPinButton.SetActive(false);
     }
+
+	public void LogInButton(){
+		if (userName.text == "021001574" && passsword.text == "111111") {
+			logInSCreen.SetActive (false);
+		}
+	}
 
 }
 [System.Serializable]
