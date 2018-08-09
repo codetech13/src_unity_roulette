@@ -11,5 +11,6 @@ public class ModePanelScript : MonoBehaviour {
 		mode1.SetActive (true);
 		myPanel.SetActive (false);
 		DemoTimer.instance.stopTimer = false;
+		DemoTimer.instance.timerSec = 10f;
 	}
 }

@@ -28,6 +28,8 @@ public class GameButtonsHandler : MonoBehaviour
 	public Text balanceText;
 	public Text userWiningText;
 
+	public GameObject parentGO;
+	public GameObject mainMenuGO;
 
     private void Awake()
     {
@@ -297,6 +299,7 @@ public class GameButtonsHandler : MonoBehaviour
         userTotalAmount = userTotalAmount - amount;
     }
 	int loclAmount =0;
+
     public void AddUserAmount(int amount)
     {
 		loclAmount = loclAmount + amount;
@@ -312,4 +315,18 @@ public class GameButtonsHandler : MonoBehaviour
             userTotalAmountOnBet = userTotalAmountOnBet + userBetAmountList[i];
         }
     }
+
+	public void showGameTable(){
+		mainMenuGO.SetActive (false);
+		parentGO.SetActive (true);
+		DemoTimer.instance.resetTimer ();
+
+	}
+
+	public void hideGameTable(){
+		mainMenuGO.SetActive (true);
+		parentGO.SetActive (false);
+		GameHud.instance.gameState = GameState.DEFAULT;
+		DemoTimer.instance.stopTimer = true;
+	}
 }

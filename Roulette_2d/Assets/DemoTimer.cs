@@ -30,7 +30,7 @@ public class DemoTimer : MonoBehaviour {
 	}
 
 	public void resetTimer(){
-		timerSec = 60000000;
+		timerSec = 10;
 		stopTimer = false;
 	}
 }
