@@ -17,7 +17,7 @@ public class DemoTimer : MonoBehaviour {
 	void Update () {
 		if (!stopTimer && timerSec > 0) {
 			timerSec = timerSec - Time.deltaTime;
-			Debug.Log ("yyyy");
+//			Debug.Log ("yyyy");
 		}
 
 		if(timerSec <=0 && !stopTimer){
@@ -30,7 +30,7 @@ public class DemoTimer : MonoBehaviour {
 	}
 
 	public void resetTimer(){
-		timerSec = 60;
+		timerSec = 60000000;
 		stopTimer = false;
 	}
 }
