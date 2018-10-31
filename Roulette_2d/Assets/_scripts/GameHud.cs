@@ -18,6 +18,9 @@ public class GameHud : MonoBehaviour {
 	public InputField passsword;
 	public GameObject logInSCreen;
 
+	[SerializeField] GameButtonsHandler buttonHandler;
+	[SerializeField] GameObject LoginPanel;
+
     private void Awake()
     {
 		instance = this;
@@ -27,6 +30,8 @@ public class GameHud : MonoBehaviour {
         {
             spinWheelBtn.SetActive(false);
         }
+
+		LoginPanel.SetActive (true);
     }
 
     private void Start()
@@ -76,6 +81,8 @@ public class GameHud : MonoBehaviour {
         this.betNumber.text = "BET NUMBER : " + this.betNo.ToString();
         mainSPinButton.SetActive(true);
 
+		//set all bet numbers in gamedata
+		GameData.instance.betNumbers.Add(betNumber);
     }
 
     public void HideImage()
@@ -83,12 +90,20 @@ public class GameHud : MonoBehaviour {
         mainImage.SetActive(false);
         gameState = GameState.RUNNING;
         mainSPinButton.SetActive(false);
+
+		//set gamedata for bet amount and bet number here
+		GameData.instance.betNumbers = buttonHandler.local;
+		GameData.instance.totalAmountOnBets = buttonHandler.totalAmtOnBets;
     }
 
 	public void LogInButton(){
 		if (userName.text == "021001574" && passsword.text == "111111") {
 			logInSCreen.SetActive (false);
 		}
+	}
+
+	public void logInSuccessfully(){
+		logInSCreen.SetActive (false);
 	}
 
 }

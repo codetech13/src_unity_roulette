@@ -54,6 +54,7 @@ public class CircularMotion : MonoBehaviour {
 //		Debug.Log ("distance " + Vector3.Distance(transform.position, pointsList[0].transform.position));
 	}
 
+	//MAJ ASSEMBLY ERROR FOR COLLISION2D
 	void OnCollisionEnter2D(Collision2D col){
 		RotateSpeed = 0;
 	}
@@ -88,6 +89,7 @@ public class CircularMotion : MonoBehaviour {
 	 }
 		
     private void FinalizeResult(int betNumber) {
+		bool isWinner = false;
         GameButtonsHandler.instance.setFinalBetNumber(luckyNumber);
         List<int> localKey = new List<int>(GameButtonsHandler.instance.betDictionary.Keys);
 
@@ -96,9 +98,13 @@ public class CircularMotion : MonoBehaviour {
 				if (betNumber == GameButtonsHandler.instance.betDictionary [localKey [i]] [j]) {
 					GameButtonsHandler.instance.AddUserAmount (localKey [i]);
 					Debug.Log ("add amount --> " + localKey[i]);
+					isWinner = true;
 				}
 			} 
 		}
+
+		GameData.instance.postResult (luckyNumber, isWinner);
+
 //        for (int i=0; i< localKey.Count; i++)
 //        {
 //            if (localKey[i] == betNumber)

@@ -42,7 +42,7 @@ public class GameButtonsHandler : MonoBehaviour
 	}
 
 	int currentBetAmt;
-	int totalAmtOnBets = 0;
+	public int totalAmtOnBets = 0;
 
 	public void betAMTButton(int value){
 
@@ -150,53 +150,53 @@ public class GameButtonsHandler : MonoBehaviour
 
     private List<int> localList = new List<int>();
     private int tempStoreBetnumberList = 0;
-    public void SetBetNumberButton(int betNumber)
+    public void SetBetNumberButton(int betNumb)
     {
-        if (chipAmount <= 0) {
-            return;
-        }
-
-		if (betDictionary.Count > 0)
-		{
-			List<int> localKey = new List<int>(betDictionary.Keys); // if double click on same bet number then remove the bet
-			for (int i = 0; i < localKey.Count; i++)
-			{
-				Debug.Log ("Local String " + localKey[i].ToString());
-				if (localKey[i] == betNumber)
-				{
-					Debug.Log ("   :::: Local String " + localKey[i].ToString() + "   " + betNumber);
-					for (int k = 0; k < betDictionary[betNumber].Count; k++)
-					{
-						AddUserAmount( betDictionary[i][k]);
-						localList = localList.Distinct().ToList();
-						localList.Remove(betDictionary[i][k]);
-						betNumbersList.Remove(localKey[i]);
-						betDictionary.Remove(betNumber);
-						SetUserBetNumbers();
-						break;
-					}
-				}
-			}
-		}
-        this.betNumber = betNumber;
-		betNumbersList.Add(this.betNumber);
-		betNumbersList = betNumbersList.Distinct().ToList();
-		localList.Add(this.betNumber);
-		localList = localList.Distinct().ToList();
-
-		List<int> keys = new List<int>(betDictionary.Keys);
-		foreach(int key in keys) {
-			if (!betDictionary.ContainsKey (key)) {
-				//add
-				betDictionary.Add (key, new List<int> ());
-			} else {
-				betDictionary [key].Add (this.betNumber);
-			}
-		}
-        DeductUserAmount(this.chipAmount);
-
-
-
+//        if (chipAmount <= 0) {
+//            return;
+//        }
+//
+//		if (betDictionary.Count > 0)
+//		{
+//			List<int> localKey = new List<int>(betDictionary.Keys); // if double click on same bet number then remove the bet
+//			for (int i = 0; i < localKey.Count; i++)
+//			{
+//				Debug.Log ("Local String " + localKey[i].ToString());
+//				if (localKey[i] == betNumb)
+//				{
+//					Debug.Log ("   :::: Local String " + localKey[i].ToString() + "   " + betNumb);
+//					for (int k = 0; k < betDictionary[betNumb].Count; k++)
+//					{
+//						AddUserAmount( betDictionary[i][k]);
+//						localList = localList.Distinct().ToList();
+//						localList.Remove(betDictionary[i][k]);
+//						betNumbersList.Remove(localKey[i]);
+//						betDictionary.Remove(betNumb);
+//						SetUserBetNumbers();
+//						break;
+//					}
+//				}
+//			}
+//		}
+//        this.betNumber = betNumb;
+//		Debug.LogError (this.betNumber);
+//		betNumbersList.Add(this.betNumber);
+//		Debug.LogError ("COUNT -- " + betNumbersList.Count);
+//		betNumbersList = betNumbersList.Distinct().ToList();
+//		Debug.LogError ("COUNTTTT -- " + betNumbersList.Count);
+//		localList.Add(this.betNumber);
+//		localList = localList.Distinct().ToList();
+//
+//		List<int> keys = new List<int>(betDictionary.Keys);
+//		foreach(int key in keys) {
+//			if (!betDictionary.ContainsKey (key)) {
+//				//add
+//				betDictionary.Add (key, new List<int> ());
+//			} else {
+//				betDictionary [key].Add (this.betNumber);
+//			}
+//		}
+//        DeductUserAmount(this.chipAmount);
 
     }
 
@@ -238,6 +238,13 @@ public class GameButtonsHandler : MonoBehaviour
 		totaleBet.text = "";
 		betDictionary.Clear ();
 		clearSelectedButton ();
+
+		Debug.LogError ("clear bet");
+
+		ClearLocalList ();
+
+		local.Clear ();
+		temp.Clear ();
 	}
 
 	void clearSelectedButton(){
@@ -269,7 +276,7 @@ public class GameButtonsHandler : MonoBehaviour
         {
 			for (int j = 0; j < betDictionary[dictKeys[i]].Count; j++) {
 //				betDictionary[dictKeys[i]] = betDictionary [dictKeys [i]].Distinct ().ToList ();
-				temp.Add(betDictionary[dictKeys[i]][j]);
+				 temp.Add(betDictionary[dictKeys[i]][j]);
 //				userBets.text = userBets.text + " " +  betDictionary[dictKeys[i]][j].ToString();
 			}
 
