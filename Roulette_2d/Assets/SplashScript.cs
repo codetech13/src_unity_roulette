@@ -13,6 +13,10 @@ public class SplashScript : MonoBehaviour {
 
 	[SerializeField] Text messageText;
 
+	[SerializeField] Image mainSplashImage;
+	[SerializeField] Sprite nextSplashImage;
+
+
 	UserRegistrationUI ureg;
 
 	void Awake () {
@@ -22,7 +26,8 @@ public class SplashScript : MonoBehaviour {
 
 	void Start(){
 //		StartCoroutine (showRegistrationForm ());
-		RegisteredSuccessfullyLoadNextScene ();
+//		RegisteredSuccessfullyLoadNextScene ();
+		StartCoroutine ("changeSplashImage");
 	}
 
 	public void showMessage(){
@@ -41,10 +46,18 @@ public class SplashScript : MonoBehaviour {
 	}
 
 	IEnumerator loadNextScene(){
-		yield return new WaitForSeconds (0.5f);
+		yield return null;
 		//put initialization hold here
 
 		SceneManager.LoadScene ("GameScene");
 	}
 
+
+	IEnumerator changeSplashImage(){
+		yield return new WaitForSeconds (2f);
+		mainSplashImage.sprite = nextSplashImage;
+
+		yield return new WaitForSeconds (1.5f);
+		RegisteredSuccessfullyLoadNextScene ();
+	}
 }
