@@ -12,7 +12,7 @@ public class GameButtonsHandler : MonoBehaviour
     public int betNumber;
     public bool isBetDouble;
     public bool setPreviousAmount;
-    public List<int> betNumbersList;
+    public List<int> betNumbersList = new List<int>();
     public List<int> betResultNumberList;
     public int userTotalAmount = 10000;
     public int userTotalAmountOnBet;
@@ -293,7 +293,9 @@ public class GameButtonsHandler : MonoBehaviour
 
     public void setFinalBetNumber(int number)
     {
-		betResultNumberList.Add(number);
+        betResultNumberList = new List<int>();
+
+        betResultNumberList.Add(number);
 		betResultNumberList = betResultNumberList.Distinct().ToList();
         for (int i = 0; i < betResultNumberList.Count; i++)
         {

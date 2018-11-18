@@ -90,7 +90,8 @@ public class CircularMotion : MonoBehaviour {
 		
     private void FinalizeResult(int betNumber) {
 		bool isWinner = false;
-        GameButtonsHandler.instance.setFinalBetNumber(luckyNumber);
+        GameButtonsHandler.instance.setFinalBetNumber(betNumber);
+        Debug.Log("lucky number " + betNumber);
         List<int> localKey = new List<int>(GameButtonsHandler.instance.betDictionary.Keys);
 
 		for (int i = 0; i < GameButtonsHandler.instance.betDictionary.Count; i++) {
