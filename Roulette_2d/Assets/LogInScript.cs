@@ -20,15 +20,43 @@ public class LogInScript : MonoBehaviour {
 	[SerializeField] GameObject registrationPanel;
 
 	public static LogInScript instance;
+    public Toggle rememberMe;
 
 	void Awake(){
 		instance = this;
 	}
 
 	void Start(){
-	}
 
-	LogInNow logInDetails;
+        rememberMe.onValueChanged.AddListener(delegate {
+            ToggleValueChanged(rememberMe);
+        });
+
+        if (PlayerPrefs.HasKey("Save_Email") && PlayerPrefs.HasKey("Save_Pass") && PlayerPrefs.HasKey ("Save_Mobile"))
+        {
+            mail.text = PlayerPrefs.GetString("Save_Email");
+            pass.text = PlayerPrefs.GetString("Save_Pass");
+            m_number.text = PlayerPrefs.GetString("Save_Mobile");
+        }
+    }
+
+    private void ToggleValueChanged(Toggle change)
+    {
+        if (change.isOn)
+        {
+            if (!string.IsNullOrEmpty(mail.text) && !string.IsNullOrEmpty(pass.text) && !string.IsNullOrEmpty(m_number.text))
+            {
+                PlayerPrefs.SetString("Save_Email", mail.text);
+                PlayerPrefs.SetString("Save_Pass", pass.text);
+                PlayerPrefs.SetString("Save_Mobile", m_number.text);
+            }
+        }
+        Debug.Log("Change " + change.isOn);
+
+    }
+
+
+    LogInNow logInDetails;
 
 	public void LogInRequest(){
 		

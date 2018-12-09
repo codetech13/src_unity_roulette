@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ModePanelScript : MonoBehaviour {
 
@@ -24,4 +25,9 @@ public class ModePanelScript : MonoBehaviour {
 		joinGame.JoinGameRequest(gameidMode1,uidMode1,joinamountMode1,datetimeMode1);
 
 	}
+
+    public void OnClickMode3()
+    {
+        SceneManager.LoadScene("LuckyTargetTimer");
+    }
 }
