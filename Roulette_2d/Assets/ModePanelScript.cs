@@ -30,4 +30,11 @@ public class ModePanelScript : MonoBehaviour {
     {
         SceneManager.LoadScene("LuckyTargetTimer");
     }
+
+    public void OnClickMode4()
+    {
+
+        joinGame.JoinGameRequest("FUN GAME", uidMode1, joinamountMode1, datetimeMode1);
+        SceneManager.LoadScene("FunCardGame");
+    }
 }
