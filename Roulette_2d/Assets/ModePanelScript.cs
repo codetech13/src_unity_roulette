@@ -21,19 +21,23 @@ public class ModePanelScript : MonoBehaviour {
 		DemoTimer.instance.stopTimer = false;
 		DemoTimer.instance.timerSec = 10f;
 
-		//send join game request
-		joinGame.JoinGameRequest(gameidMode1,uidMode1,joinamountMode1,datetimeMode1);
+        datetimeMode1 = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fffffff");
+        //send join game request
+        joinGame.JoinGameRequest(gameidMode1,uidMode1,joinamountMode1,datetimeMode1);
 
 	}
 
     public void OnClickMode3()
     {
+        datetimeMode1 = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fffffff");
+        joinGame.JoinGameRequest("LUCKY TARGET", uidMode1, joinamountMode1, datetimeMode1);
         SceneManager.LoadScene("LuckyTargetTimer");
     }
 
     public void OnClickMode4()
     {
 
+        datetimeMode1 = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fffffff");
         joinGame.JoinGameRequest("FUN GAME", uidMode1, joinamountMode1, datetimeMode1);
         SceneManager.LoadScene("FunCardGame");
     }

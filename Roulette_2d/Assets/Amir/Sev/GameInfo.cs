@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class GameInfo : MonoBehaviour {
 
@@ -13,7 +14,9 @@ public class GameInfo : MonoBehaviour {
 	GameInfoData local;
 
 	void Start(){
-		PostRequest ();
+        datetime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fffffff");
+
+        PostRequest ();
 	}
 
 	void PostRequest()
@@ -22,9 +25,9 @@ public class GameInfo : MonoBehaviour {
 		local = new GameInfoData ();
 		local.gameid = this.gameid;
 		local.gametype = this.gametype;
-		local.datetime = this.datetime;
+		local.datetime = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fffffff");
 
-		string dataString = JsonUtility.ToJson (local);
+        string dataString = JsonUtility.ToJson (local);
 
 		Debug.Log (dataString);
 		WWW www;

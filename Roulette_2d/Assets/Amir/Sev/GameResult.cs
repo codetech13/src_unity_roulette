@@ -18,7 +18,15 @@ public class GameResult : MonoBehaviour {
 	public static GameResult instance;
 
 	void Awake(){
-		instance = this;
+        if (instance != null)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
 	}
 
 	void Start(){
@@ -40,9 +48,10 @@ public class GameResult : MonoBehaviour {
 		local.betNumbers = betNumbers;
 		local.winningNumber = wininngNumber;
 		local.isUserWinner = isWinner;
-		local.datetime = this.datetime;
+        local.datetime = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fffffff");
 
-		string dataString = JsonUtility.ToJson (local);
+
+        string dataString = JsonUtility.ToJson (local);
 
 		Debug.Log (dataString);
 		WWW www;
@@ -67,9 +76,9 @@ public class GameResult : MonoBehaviour {
 		local.betNumbers = this.betNumbers;
 		local.winningNumber = this.winningNumber;
 		local.isUserWinner = this.isUserWinner;
-		local.datetime = this.datetime;
+		local.datetime = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fffffff");
 
-		string dataString = JsonUtility.ToJson (local);
+        string dataString = JsonUtility.ToJson (local);
 
 		Debug.Log (dataString);
 		WWW www;

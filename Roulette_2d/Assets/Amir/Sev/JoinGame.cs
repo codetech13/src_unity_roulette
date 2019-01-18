@@ -23,9 +23,10 @@ public class JoinGame : MonoBehaviour {
 //		local.uid = UID;
 		local.uid = GameData.instance.localData.uid;
 		local.joinamount = joinAmount;
-		local.datetime = dataTime;
+        local.datetime = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fffffff");
 
-		string dataString = JsonUtility.ToJson (local);
+
+        string dataString = JsonUtility.ToJson (local);
 
 		Debug.Log (dataString);
 		WWW www;
@@ -46,9 +47,9 @@ public class JoinGame : MonoBehaviour {
 		local.gameid = this.gameid;
 		local.uid = this.uid;
 		local.joinamount = this.joinamount;
-		local.datetime = this.datetime;
+		local.datetime = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fffffff");
 
-		string dataString = JsonUtility.ToJson (local);
+        string dataString = JsonUtility.ToJson (local);
 
 		Debug.Log (dataString);
 		WWW www;

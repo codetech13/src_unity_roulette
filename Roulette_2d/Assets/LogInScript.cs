@@ -128,3 +128,37 @@ public class LogInScript : MonoBehaviour {
 		public string gsm_token;
 	}
 }
+
+//Fetch data from server
+public class CurrencyDetails
+{
+    public string currencyId { get; set; }
+    public string currencyName { get; set; }
+    public string currentAmount { get; set; }
+    public string currentStatus { get; set; }
+}
+
+public class Data
+{
+    public string uid { get; set; }
+    public string playername { get; set; }
+    public string username { get; set; }
+    public string dob { get; set; }
+    public string address { get; set; }
+    public string mobile { get; set; }
+    public string email { get; set; }
+    public string gsm_token { get; set; }
+    public string points { get; set; }
+    public string usertype { get; set; }
+    public string status { get; set; }
+    public string cdate { get; set; }
+    public string checkstatus { get; set; }
+    public List<CurrencyDetails> CurrencyDetail { get; set; }
+}
+
+public class RootObject
+{
+    public string status_code { get; set; }
+    public string message { get; set; }
+    public Data data { get; set; }
+}

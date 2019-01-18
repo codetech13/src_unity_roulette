@@ -19,7 +19,7 @@ public class FunCardGameUI : MonoBehaviour
     public bool isTimerComplete = false;
     public bool isBetWon = false;
     private bool result = false;
-    public Image selectedCardImage;
+   // public Image selectedCardImage;
     private Sprite selectedCardSprite;
     private bool isdeal = false;
     private float timeCopy;
@@ -31,6 +31,7 @@ public class FunCardGameUI : MonoBehaviour
     public Text winningText;
     public Text timerText;
     public Text[] historyText;
+    public Toggle playerToggle;
 
     private void Awake()
     {
@@ -39,13 +40,22 @@ public class FunCardGameUI : MonoBehaviour
 
     private void Start()
     {
+        playerToggle.onValueChanged.AddListener(delegate {
+            ToggleValueChanged(playerToggle);
+        });
         history.Clear();
         ResetValues();
         SetTexts();
         timeCopy = time;
-        StartCoroutine(StartMyCoroutine());
+       // StartCoroutine(StartMyCoroutine());
     }
-
+    private void ToggleValueChanged(Toggle change)
+    {
+        if (change.isOn)
+        {
+            Debug.Log("Change is on   " + change.isOn);
+        }
+    }
 
     private GameObject chipGO = null;
     private Image chipImage = null;
@@ -112,11 +122,11 @@ public class FunCardGameUI : MonoBehaviour
         SetTexts();
         if (result)
         {
-            selectedCardImage.gameObject.SetActive(false);
+           // selectedCardImage.gameObject.SetActive(false);
             cardAnim.ShuffleAllCards();
             cardAnim.startAnimation = false;
             time = timeCopy;
-            StartCoroutine(StartMyCoroutine());
+           // StartCoroutine(StartMyCoroutine());
         }
 
     }
@@ -155,12 +165,14 @@ public class FunCardGameUI : MonoBehaviour
 
     public void DealButtonClick()
     {
-        if (!isCardSelected || string.IsNullOrEmpty(andarOrBahar))
+        if (!isCardSelected /*|| string.IsNullOrEmpty(andarOrBahar)*/)
         {
             Debug.Log("NO DEAL");
             return;
         }
         isdeal = true;
+        cardAnim.startAnimation = true;
+        cardAnim.stop = false;
 
     }
     public string selectedCard = "";
@@ -215,11 +227,12 @@ public class FunCardGameUI : MonoBehaviour
         andarOrBahar = name;
     }
 
+    #region For TIMER GAME
     private IEnumerator StartMyCoroutine()
     {
         isTimerComplete = false;
         cardAnim.startAnimation = false;
-        selectedCardImage.gameObject.SetActive(false);
+        //selectedCardImage.gameObject.SetActive(false);
         while (time > 0){
             time -= Time.deltaTime;
             timerText.text = time.ToString("F0");
@@ -232,8 +245,8 @@ public class FunCardGameUI : MonoBehaviour
             isTimerComplete = true;
             cardAnim.startAnimation = true;
             cardAnim.stop = false;
-            selectedCardImage.gameObject.SetActive(true);
-            selectedCardImage.sprite = selectedCardSprite;
+            //selectedCardImage.gameObject.SetActive(true);
+            //selectedCardImage.sprite = selectedCardSprite;
         }
         else
         {
@@ -241,6 +254,7 @@ public class FunCardGameUI : MonoBehaviour
             RepeatCoroutine();
         }
     }
+    
 
     private void RepeatCoroutine()
     {
@@ -248,6 +262,7 @@ public class FunCardGameUI : MonoBehaviour
         time = timeCopy;
         StartCoroutine(StartMyCoroutine());
     }
+#endregion
 
     public void Result(bool isWon, string card, string cardType)
     {
@@ -257,7 +272,8 @@ public class FunCardGameUI : MonoBehaviour
             winningAmount = 2 * totalAmountOnBet;
             totalAmount = totalAmount + 2 * totalAmountOnBet;
         }
-
+        //Post Result
+        //GameData.instance.PostFungameResult(card, totalAmountOnBet, selectedCard, isWon);
         if (history.Count == historyText.Length)
         {
             history.RemoveAt(0);

@@ -27,4 +27,13 @@ public class GameData : MonoBehaviour {
 		GameResult.instance.postGameResult (localData.uid, localData.uid, "1000", totalAmountOnBets.ToString (), numbers, luckyNumber.ToString() ,iswinner ? 1.ToString() : 2.ToString());
 		Debug.LogError ("list numbers " +  betNumbers.ToString ());
 	}
+
+    public void PostFungameResult(string card, int totalAmountOnbet, string selectedCard, bool isUserWinner)
+    {
+        GameResult.instance.postGameResult("FUN GAME", localData.uid, "1000", totalAmountOnbet.ToString(), selectedCard, card, isUserWinner.ToString());
+    }
+    public void PostLuckyGameResult(string winningNumber, int totalAmountOnbet, string betNumbers, bool isUserWinner)
+    {
+        GameResult.instance.postGameResult("LUCKY GAME", localData.uid, "1000", totalAmountOnbet.ToString(), betNumbers, winningNumber, isUserWinner.ToString());
+    }
 }
