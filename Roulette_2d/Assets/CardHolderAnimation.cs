@@ -20,11 +20,14 @@ public class CardHolderAnimation : MonoBehaviour {
     public List<GameObject> ALLCARD = new List<GameObject>();
     [SerializeField]private List<CardProperty> cardProperties = new List<CardProperty>();
 
+    [SerializeField] private Transform playerT;
+    [SerializeField] private Transform dealerT;
 
     private void Awake()
     {
         ShuffleAllCards();
     }
+
     private void Start1()
     {
         ALLCARD.Clear();
@@ -63,9 +66,9 @@ public class CardHolderAnimation : MonoBehaviour {
 		}
 
 		if (currentIndex % 2 == 0) {
-			playAnimation (ALLCARD [currentIndex], cardProperties[currentIndex], bahar, false);
+			playAnimation (ALLCARD [currentIndex], cardProperties[currentIndex], playerT, false);
 		} else {
-			playAnimation (ALLCARD [currentIndex], cardProperties[currentIndex], andar, true);
+			playAnimation (ALLCARD [currentIndex], cardProperties[currentIndex], dealerT, true);
 		}
 	}
 
@@ -88,7 +91,7 @@ public class CardHolderAnimation : MonoBehaviour {
             {
                 Debug.Log("<color=green>Found The Card</color>" + cardProperty.card + "    " + FunCardGameUI.instance.selectedCard + "   is andar  " + isAndar, go);
            
-                if (isAndar == FunCardGameUI.instance.isAndar)
+                if (isAndar != FunCardGameUI.instance.isAndar) //TODO Check this block
                 {
                     FunCardGameUI.instance.Result(true, cardProperty.card, cardProperty.cardType);
                     Debug.Log("<color=yellow> USER WON</color>");
@@ -106,4 +109,31 @@ public class CardHolderAnimation : MonoBehaviour {
 
 
 	}
+
+    public void SwapTransform(bool swap)
+    {
+        if (swap)
+        {
+            Transform temp = null;
+            temp = playerT;
+            playerT = dealerT;
+            dealerT = temp;
+            Debug.Log("SWAPPING");
+
+        }
+        else
+        {
+           /* Transform temp1 = null;
+            temp1 = playerT;
+            playerT = dealerT;
+            dealerT = temp1;*/
+
+        }
+    }
+
+    public void ResetTransform()
+    {
+        playerT = bahar;
+        dealerT = andar;
+    }
 }

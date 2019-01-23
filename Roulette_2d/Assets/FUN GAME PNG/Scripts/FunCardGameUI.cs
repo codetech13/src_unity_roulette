@@ -12,12 +12,15 @@ public class FunCardGameUI : MonoBehaviour
     private bool isChipSelected = false;
     private bool isBetDouble = false;
     private List<string> history = new List<string>();
+    private List<string> cardhistory = new List<string>();
+    private List<string> winnerhistory = new List<string>();
     public int totalAmount = 20000;
     public int totalAmountOnBet = 0;
     public int winningAmount = 0;
     public float time = 60f;
     public bool isTimerComplete = false;
     public bool isBetWon = false;
+    public bool isPlayerFirst = false;
     private bool result = false;
    // public Image selectedCardImage;
     private Sprite selectedCardSprite;
@@ -31,6 +34,8 @@ public class FunCardGameUI : MonoBehaviour
     public Text winningText;
     public Text timerText;
     public Text[] historyText;
+    public Text[] cardhistoryText;
+    public Text[] winnerhistoryText;
     public Toggle playerToggle;
 
     private void Awake()
@@ -44,6 +49,8 @@ public class FunCardGameUI : MonoBehaviour
             ToggleValueChanged(playerToggle);
         });
         history.Clear();
+        cardhistory.Clear();
+        winnerhistory.Clear();
         ResetValues();
         SetTexts();
         timeCopy = time;
@@ -55,6 +62,7 @@ public class FunCardGameUI : MonoBehaviour
         {
             Debug.Log("Change is on   " + change.isOn);
         }
+        isPlayerFirst = change.isOn;
     }
 
     private GameObject chipGO = null;
@@ -136,6 +144,7 @@ public class FunCardGameUI : MonoBehaviour
         isChipSelected = false;
         isCardSelected = false;
         totalAmountOnBet = 0;
+        selectedCard = "";
     }
 
     public void SetTexts()
@@ -156,6 +165,24 @@ public class FunCardGameUI : MonoBehaviour
             }
         }
 
+
+        if (cardhistory.Count <= cardhistoryText.Length)
+        {
+            for (int i = 0; i < cardhistory.Count; i++)
+            {
+                cardhistoryText[i].text = cardhistory[i].ToString();
+            }
+        }
+
+
+        if (winnerhistory.Count <= winnerhistoryText.Length)
+        {
+            for (int i = 0; i < winnerhistory.Count; i++)
+            {
+                winnerhistoryText[i].text = winnerhistory[i].ToString();
+            }
+        }
+
     }
 
     public void BackToMainScene()
@@ -171,10 +198,16 @@ public class FunCardGameUI : MonoBehaviour
             return;
         }
         isdeal = true;
+
+        cardAnim.SwapTransform(isPlayerFirst);
         cardAnim.startAnimation = true;
         cardAnim.stop = false;
+        //totalAmountOnBet = tempNO;
+        //totalAmount = totalAmount - totalAmountOnBet;
+        SetTexts();
 
     }
+    [SerializeField] private int tempNO = 0;
     public string selectedCard = "";
     public bool isCardSelected = false;
     public void SelectCard(string card)
@@ -184,21 +217,35 @@ public class FunCardGameUI : MonoBehaviour
             Debug.LogError("Chip isn't selected");
             return;
         }
-        selectedCard = card;
-        if (!isCardSelected)
-        {
-            isCardSelected = true;
-        }
+
+        /* tempValue++;
+         if (isCardSelected) {
+             tempNO = tempValue * totalAmountOnBet;
+             if (totalAmount > tempNO)
+             {
+
+                 // totalAmount = totalAmount - totalAmountOnBet;
+             }
+             else
+             {
+                 totalAmountOnBet = tempValue * totalAmountOnBet;
+             }
+         }*/
+
+   
+    
+
 
 
         if (go == null)
         {
             go = EventSystem.current.currentSelectedGameObject;
-            Debug.Log(go.name, go);
+          //  Debug.Log(go.name, go);
             goImage = go.transform.GetChild(0).GetComponent<Image>();
-            Debug.Log("goImage        " + goImage.name, goImage.gameObject);
+           // Debug.Log("goImage        " + goImage.name, goImage.gameObject);
             goImage.gameObject.SetActive(true);
             goImage.sprite = chipSprite;
+            Debug.Log("BBBB");
         }
         else
         {
@@ -207,13 +254,31 @@ public class FunCardGameUI : MonoBehaviour
             go = EventSystem.current.currentSelectedGameObject;
             goImage = go.transform.GetChild(0).GetComponent<Image>();
             goImage.gameObject.SetActive(true);
+            /* if (isCardSelected)
+             {
+                 Text tempText = goImage.gameObject.transform.GetChild(0).GetComponent<Text>();
+                 tempText.gameObject.SetActive(true);
+                 tempText.text = "";
+                 tempText.text = tempNO.ToString();
+             }*/
+
             goImage.sprite = chipSprite;
+            Debug.Log("CCCC");
         }
         selectedCardSprite = go.GetComponent<Image>().sprite;
+        SetTexts();
+        if (!isCardSelected)
+        {
+            //tempNO = 0;
+            selectedCard = card;
+            isCardSelected = true;
+            tap++;
+        }
     }
-
+    int tap = 0;
     public bool isAndar = false;
     private string andarOrBahar = "";
+    [SerializeField]private int tempValue = 0; //for clicking many times on same button
     public void AndarOrBahar(string name)
     {
         if (name == "ANDAR")
@@ -243,6 +308,7 @@ public class FunCardGameUI : MonoBehaviour
         {
             // RepeatCoroutine();
             isTimerComplete = true;
+            cardAnim.SwapTransform(isPlayerFirst);
             cardAnim.startAnimation = true;
             cardAnim.stop = false;
             //selectedCardImage.gameObject.SetActive(true);
@@ -278,10 +344,28 @@ public class FunCardGameUI : MonoBehaviour
         {
             history.RemoveAt(0);
         }
+        if (cardhistory.Count == cardhistoryText.Length)
+        {
+            cardhistory.RemoveAt(0);
+        }
+        if (winnerhistory.Count == winnerhistoryText.Length)
+        {
+            winnerhistory.RemoveAt(0);
+        }
         result = true;
+        history.Add(selectedCard);
         SetTexts();
         ResetValues();
-        history.Add(card + cardType);
+        cardhistory.Add(card + cardType);
+        if (isWon) {
+            winnerhistory.Add("Player");
+        }
+        else
+        {
+            winnerhistory.Add("Dealer");
+
+        }
         ShowHistory();
+        cardAnim.ResetTransform();
     }
 }

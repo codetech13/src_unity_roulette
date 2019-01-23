@@ -159,6 +159,7 @@ public class LuckyTargetTimerUI : MonoBehaviour {
             winningAmount = 0;
         }
         winNumber = betNumberRslt;
+        if(GameData.instance != null)
         GameData.instance.PostLuckyGameResult(winNumber.ToString(), totalAmountOnBet, selectedBetNumber.ToString(), isBetWon);
         SetTexts();
         ResetValues();
