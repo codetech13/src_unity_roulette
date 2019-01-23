@@ -32,7 +32,11 @@ public class UserRegistrationUI : MonoBehaviour {
 	}
 
 	public void submit(){
-		PostRequest();
+		if (Application.internetReachability != NetworkReachability.NotReachable) {
+			PostRequest ();
+		} else {
+			Debug.LogError ("INTERNET NOT AVAILABLE");
+		}
 	}
 
 	RegistrationData local;

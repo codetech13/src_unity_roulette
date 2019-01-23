@@ -23,22 +23,32 @@ public class ModePanelScript : MonoBehaviour {
 
         datetimeMode1 = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fffffff");
         //send join game request
-        joinGame.JoinGameRequest(gameidMode1,uidMode1,joinamountMode1,datetimeMode1);
-
+		if (Application.internetReachability != NetworkReachability.NotReachable) {
+			joinGame.JoinGameRequest (gameidMode1, uidMode1, joinamountMode1, datetimeMode1);
+		} else {
+			Debug.LogError ("INTERNET NOT AVAILABLE");
+		}
 	}
 
     public void OnClickMode3()
     {
-        datetimeMode1 = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fffffff");
-        joinGame.JoinGameRequest("LUCKY TARGET", uidMode1, joinamountMode1, datetimeMode1);
-        SceneManager.LoadScene("LuckyTargetTimer");
+		if (Application.internetReachability != NetworkReachability.NotReachable) {
+			datetimeMode1 = System.DateTime.Now.ToString ("yyyy-MM-dd HH:mm:ss.fffffff");
+			joinGame.JoinGameRequest ("LUCKY TARGET", uidMode1, joinamountMode1, datetimeMode1);
+			SceneManager.LoadScene ("LuckyTargetTimer");
+		} else {
+			Debug.LogError ("INTERNET NOT AVAILABLE");
+		}
     }
 
     public void OnClickMode4()
     {
-
-        datetimeMode1 = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fffffff");
-        joinGame.JoinGameRequest("FUN GAME", uidMode1, joinamountMode1, datetimeMode1);
-        SceneManager.LoadScene("FunCardGame");
+		if (Application.internetReachability != NetworkReachability.NotReachable) {
+			datetimeMode1 = System.DateTime.Now.ToString ("yyyy-MM-dd HH:mm:ss.fffffff");
+			joinGame.JoinGameRequest ("FUN GAME", uidMode1, joinamountMode1, datetimeMode1);
+			SceneManager.LoadScene ("FunCardGame");
+		} else {
+			Debug.LogError ("INTERNET NOT AVAILABLE");
+		}
     }
 }

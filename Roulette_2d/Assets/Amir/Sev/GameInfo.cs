@@ -16,7 +16,11 @@ public class GameInfo : MonoBehaviour {
 	void Start(){
         datetime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fffffff");
 
-        PostRequest ();
+		if (Application.internetReachability != NetworkReachability.NotReachable) {
+			PostRequest ();
+		} else {
+			Debug.LogError ("INTERNET NOT AVAILABLE");
+		}
 	}
 
 	void PostRequest()

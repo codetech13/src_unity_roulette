@@ -15,7 +15,11 @@ public class JoinGameResponse : MonoBehaviour {
 	[SerializeField] string url = "http://funasiagame.16mb.com/v1/JoinGameResponce";
 
 	void Start(){
-		PostRequest ();
+		if (Application.internetReachability != NetworkReachability.NotReachable) {
+			PostRequest ();
+		} else {
+			Debug.LogError ("INTERNET NOT AVAILABLE");
+		}
 	}
 
 	JoinGameResponseData local;

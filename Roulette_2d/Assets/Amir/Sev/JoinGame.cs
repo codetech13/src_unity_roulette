@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class JoinGame : MonoBehaviour {
 
@@ -25,6 +26,16 @@ public class JoinGame : MonoBehaviour {
 		local.joinamount = joinAmount;
         local.datetime = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fffffff");
 
+		int x;
+		int y;
+
+		Int32.TryParse (GameData.instance.localData.CurrencyDetail [0].currentAmount, out x);
+		Int32.TryParse (joinAmount, out y);
+		x = x - y;
+
+		GameData.instance.localData.CurrencyDetail [0].currentAmount = x.ToString ();
+
+		Debug.LogError ("join " + GameData.instance.localData.CurrencyDetail [0].currentAmount );
 
         string dataString = JsonUtility.ToJson (local);
 

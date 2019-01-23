@@ -41,9 +41,11 @@ public class GameButtonsHandler : MonoBehaviour
 		betDictionary = new Dictionary<int, List<int>> ();
 	}
 
-	int currentBetAmt;
+
 	public int totalAmtOnBets = 0;
 
+	#region BET AMMOUNT BUTTONS
+	int currentBetAmt;
 	public void betAMTButton(int value){
 
 		if (chipAmount > userTotalAmount) {
@@ -53,6 +55,43 @@ public class GameButtonsHandler : MonoBehaviour
 		chipAmount = currentBetAmt;
 		local.Clear ();
 	}
+	#endregion
+
+	#region New Bet Number logic
+	public Dictionary<int , int> betNumberData = new Dictionary<int, int>();
+	void selectedBetNumber(int value){
+		if(GameHud.instance.gameState == GameState.RUNNING){
+			Debug.LogError ("TABLE IS RUNNING CAN'T BET NOW");
+			return;
+		}
+
+		if (chipAmount <= 0) {
+			return;
+		}
+
+		if (!betNumberData.ContainsKey (value)) {
+			betNumberData.Add (value, chipAmount);
+		} else {
+			betNumberData [value] = betNumberData [value] + chipAmount;
+		}
+
+		Debug.LogError ("betN " + value + " amt " + betNumberData [value]);
+	}
+	#endregion
+
+	#region FINALIZE BET RESULT AND REWARD
+
+	public void finalizeReward(int luckyNumber){
+		int netAMT = 0;
+		int finalReward = 0;
+		if(betNumberData.ContainsKey(luckyNumber)){
+			betNumberData.TryGetValue (luckyNumber, out netAMT);
+			finalReward = netAMT * 36;
+			Debug.LogError ("netAMT " + netAMT + " finalReward " + finalReward);
+		}
+	}
+
+	#endregion
 
 	public List<int> local;
 	bool hasSelected;
@@ -67,7 +106,15 @@ public class GameButtonsHandler : MonoBehaviour
 		Debug.Log ("clicked");
 	}
 
+	#region BET NUMBER BUTTONS
 	public void betNumberButton(int value){
+		selectedBetNumber (value);
+		return;
+
+		if(GameHud.instance.gameState == GameState.RUNNING){
+			Debug.LogError ("TABLE IS RUNNING CAN'T BET NOW");
+			return;
+		}
 
 		if (chipAmount <= 0) {
 			return;
@@ -124,7 +171,7 @@ public class GameButtonsHandler : MonoBehaviour
 
 		SetUserBetNumbers ();
 	}
-
+	#endregion
 
     public void ChipsAmountButton(int chipAmount)
     {
@@ -202,13 +249,16 @@ public class GameButtonsHandler : MonoBehaviour
 
     public void MakeDoubleAmount()
     {
-		if (!isBetDouble && userTotalAmount > 2 * chipAmount && userBetAmountList.Count > 0)
-        {
-            chipAmount = 2 * chipAmount;
-            DeductUserAmount(chipAmount);
-            isBetDouble = true;
-        }
+//		if (!isBetDouble && userTotalAmount > 2 * chipAmount && userBetAmountList.Count > 0)
+//        {
+//            chipAmount = 2 * chipAmount;
+//            DeductUserAmount(chipAmount);
+//            isBetDouble = true;
+//        }
 
+		if(!isBetDouble){
+			isBetDouble = true;	
+		}
     }
 
     public void MakePreviousAmount()

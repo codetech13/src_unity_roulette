@@ -37,4 +37,9 @@ public class Rotation : MonoBehaviour {
 		yield return new WaitForSeconds (3);
 		shouldStop = true;
 	}
+
+	public void reset (){
+		shouldStop = false;
+		runOnlyOnce = false;
+	}
 }

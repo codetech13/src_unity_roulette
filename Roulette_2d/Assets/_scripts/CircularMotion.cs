@@ -14,11 +14,15 @@ public class CircularMotion : MonoBehaviour {
 	[SerializeField]private bool runOnlyOnce;
     private int luckyNumber;
 
+	float tempRotateSpeed;
+	bool resetMotion;
+
 	private void Start()
 	{
 		_centre = transform.position;
 		Debug.Log ("a");
 		RotateSpeed = RotateSpeed + Random.Range (0.5f, 1.3f);
+		tempRotateSpeed = RotateSpeed;
 	}
 
 	float timer;
@@ -28,6 +32,11 @@ public class CircularMotion : MonoBehaviour {
         if (hud.gameState == GameState.DEFAULT) {
             return;
         }
+		if(hud.gameState == GameState.RUNNING && resetMotion == true){
+			resetMotion = false;
+			reset ();
+		}
+
         Debug.Log("YYYYYY");
 		timer += Time.deltaTime;
 		if (RotateSpeed > 0 && timer > 2f) {
@@ -85,6 +94,7 @@ public class CircularMotion : MonoBehaviour {
 		DemoTimer.instance.resetTimer ();
 		runOnlyOnce = false;
 		hud.gameState = GameState.DEFAULT;
+		resetMotion = true;
 		Debug.Log ("point " + temp + " temp is the closest point" + "  Lucky Number  " + luckyNumber);
 	 }
 		
@@ -93,15 +103,17 @@ public class CircularMotion : MonoBehaviour {
         GameButtonsHandler.instance.setFinalBetNumber(luckyNumber);
         List<int> localKey = new List<int>(GameButtonsHandler.instance.betDictionary.Keys);
 
-		for (int i = 0; i < GameButtonsHandler.instance.betDictionary.Count; i++) {
-			for (int j = 0; j < GameButtonsHandler.instance.betDictionary [localKey [i]].Count; j++) {
-				if (betNumber == GameButtonsHandler.instance.betDictionary [localKey [i]] [j]) {
-					GameButtonsHandler.instance.AddUserAmount (localKey [i]);
-					Debug.Log ("add amount --> " + localKey[i]);
-					isWinner = true;
-				}
-			} 
-		}
+		GameButtonsHandler.instance.finalizeReward (luckyNumber);
+
+//		for (int i = 0; i < GameButtonsHandler.instance.betDictionary.Count; i++) {
+//			for (int j = 0; j < GameButtonsHandler.instance.betDictionary [localKey [i]].Count; j++) {
+//				if (betNumber == GameButtonsHandler.instance.betDictionary [localKey [i]] [j]) {
+//					GameButtonsHandler.instance.AddUserAmount (localKey [i]);
+//					Debug.Log ("add amount --> " + localKey[i]);
+//					isWinner = true;
+//				}
+//			} 
+//		}
 
 		GameData.instance.postResult (luckyNumber, isWinner);
 
@@ -126,4 +138,9 @@ public class CircularMotion : MonoBehaviour {
 //
 //        }
     }
+
+
+	void reset(){
+		RotateSpeed = tempRotateSpeed;
+	}
 }

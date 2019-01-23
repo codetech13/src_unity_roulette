@@ -59,25 +59,28 @@ public class LogInScript : MonoBehaviour {
     LogInNow logInDetails;
 
 	public void LogInRequest(){
-		
-		logInDetails = new LogInNow ();
-		logInDetails.email = mail.text;
-		logInDetails.gsm_token = this.gsm_token;
-		logInDetails.mobile = m_number.text;
-		logInDetails.password = pass.text;
+		if (Application.internetReachability != NetworkReachability.NotReachable) {
+			logInDetails = new LogInNow ();
+			logInDetails.email = mail.text;
+			logInDetails.gsm_token = this.gsm_token;
+			logInDetails.mobile = m_number.text;
+			logInDetails.password = pass.text;
 
-		string dataString = JsonUtility.ToJson (logInDetails);
+			string dataString = JsonUtility.ToJson (logInDetails);
 
-		Debug.Log (dataString);
-		WWW www;
-		Hashtable postHeader = new Hashtable();
-		postHeader.Add("Authorization", "sadas21321");
+			Debug.Log (dataString);
+			WWW www;
+			Hashtable postHeader = new Hashtable ();
+			postHeader.Add ("Authorization", "sadas21321");
 
-		// convert json string to byte
-		var formData = System.Text.Encoding.UTF8.GetBytes(dataString);
+			// convert json string to byte
+			var formData = System.Text.Encoding.UTF8.GetBytes (dataString);
 
-		www = new WWW(this.url, formData, postHeader);
-		StartCoroutine(WaitForRequest(www));
+			www = new WWW (this.url, formData, postHeader);
+			StartCoroutine (WaitForRequest (www));
+		} else {
+			Debug.LogError ("INTERNET NOT AVAILABLE");
+		}
 	}
 
 	public UserRegistrationUI.response responseData;

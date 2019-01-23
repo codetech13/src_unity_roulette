@@ -21,6 +21,8 @@ public class GameHud : MonoBehaviour {
 	[SerializeField] GameButtonsHandler buttonHandler;
 	[SerializeField] GameObject LoginPanel;
 
+	[SerializeField] Rotation tableRotation;
+
     private void Awake()
     {
 		instance = this;
@@ -87,9 +89,12 @@ public class GameHud : MonoBehaviour {
 
     public void HideImage()
     {
+		Debug.Log("Hide Image");
         mainImage.SetActive(false);
         gameState = GameState.RUNNING;
         mainSPinButton.SetActive(false);
+
+		tableRotation.reset ();
 
 		//set gamedata for bet amount and bet number here
 		GameData.instance.betNumbers = buttonHandler.local;
