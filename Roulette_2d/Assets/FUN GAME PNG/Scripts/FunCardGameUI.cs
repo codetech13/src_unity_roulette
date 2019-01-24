@@ -68,9 +68,12 @@ public class FunCardGameUI : MonoBehaviour
     private GameObject chipGO = null;
     private Image chipImage = null;
     private Sprite chipSprite;
+    int currentBetAmount = 0;
     public void OnChipButtonCick(int chipAmount)
     {
-        if (totalAmount > chipAmount && !isChipSelected)
+        currentBetAmount = chipAmount;
+
+        /* if (totalAmount > chipAmount && !isChipSelected)
         {
             isChipSelected = true;
             totalAmount = totalAmount - chipAmount;
@@ -87,11 +90,13 @@ public class FunCardGameUI : MonoBehaviour
             }
 
         }
+        */
         chipGO = EventSystem.current.currentSelectedGameObject;
         Debug.Log(chipGO.name, chipGO);
         chipImage = chipGO.GetComponent<Image>();
         chipSprite = chipImage.sprite;
-        SetTexts();
+        isChipSelected = true;
+        //SetTexts();
     }
     private GameObject go = null;
     private Image goImage = null;
@@ -218,6 +223,11 @@ public class FunCardGameUI : MonoBehaviour
             return;
         }
 
+        if (totalAmount < currentBetAmount) {
+            Debug.LogError("BET AMOUNT  > CURRENT AMOUNT");
+            return;
+        }
+
         /* tempValue++;
          if (isCardSelected) {
              tempNO = tempValue * totalAmountOnBet;
@@ -245,7 +255,9 @@ public class FunCardGameUI : MonoBehaviour
            // Debug.Log("goImage        " + goImage.name, goImage.gameObject);
             goImage.gameObject.SetActive(true);
             goImage.sprite = chipSprite;
-            Debug.Log("BBBB");
+            //   Debug.Log("BBBB");
+            totalAmountOnBet = totalAmountOnBet + currentBetAmount;
+            totalAmount = totalAmount - currentBetAmount;
         }
         else
         {
@@ -254,13 +266,17 @@ public class FunCardGameUI : MonoBehaviour
             go = EventSystem.current.currentSelectedGameObject;
             goImage = go.transform.GetChild(0).GetComponent<Image>();
             goImage.gameObject.SetActive(true);
-            /* if (isCardSelected)
+
+            totalAmountOnBet = totalAmountOnBet + currentBetAmount;
+            totalAmount = totalAmount - currentBetAmount;
+
+             if (isCardSelected)
              {
                  Text tempText = goImage.gameObject.transform.GetChild(0).GetComponent<Text>();
                  tempText.gameObject.SetActive(true);
                  tempText.text = "";
-                 tempText.text = tempNO.ToString();
-             }*/
+                 tempText.text = totalAmountOnBet.ToString();
+             }
 
             goImage.sprite = chipSprite;
             Debug.Log("CCCC");
