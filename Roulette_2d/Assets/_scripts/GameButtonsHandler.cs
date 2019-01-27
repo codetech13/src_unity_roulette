@@ -59,58 +59,273 @@ public class GameButtonsHandler : MonoBehaviour
 
 	#region New Bet Number logic
 	public Dictionary<int , int> betNumberData = new Dictionary<int, int>();
+
+	[SerializeField] List<int> CurrentBetsList = new List<int> ();
+
 	void selectedBetNumber(int value){
+		int tempChipAmount = chipAmount;
 		if(GameHud.instance.gameState == GameState.RUNNING){
 			Debug.LogError ("TABLE IS RUNNING CAN'T BET NOW");
 			return;
 		}
 
-		if (chipAmount <= 0) {
+		if (chipAmount <= 0 || chipAmount > userTotalAmount) {
+			return;
+		}
+
+		if (isBetDouble && chipAmount * 2 > userTotalAmount) {
 			return;
 		}
 
 		if (!betNumberData.ContainsKey (value)) {
-			betNumberData.Add (value, chipAmount);
+			if (!isBetDouble) {
+				betNumberData.Add (value, chipAmount);
+			} else {
+				betNumberData.Add (value, chipAmount * 2);
+			}
 		} else {
-			betNumberData [value] = betNumberData [value] + chipAmount;
+			if (!isBetDouble) {
+				betNumberData [value] = betNumberData [value] + chipAmount;
+			} else {
+				betNumberData [value] = (betNumberData [value] + chipAmount)*2;
+			}
 		}
 
+		if (!CurrentBetsList.Contains (value)) {
+			CurrentBetsList.Add (value);
+		}
+
+		if (isBetDouble && userTotalAmount > 2 * chipAmount) {
+			chipAmount = 2 * chipAmount;
+			DeductUserAmount (chipAmount);
+		} else {
+			DeductUserAmount (chipAmount);
+		}
+		chipAmount = tempChipAmount;
 		Debug.LogError ("betN " + value + " amt " + betNumberData [value]);
 	}
+
+	void deleteSelectedBetNumber(int value){
+		if(betNumberData.ContainsKey(value)){
+			if (betNumberData [value] > 0) {
+				betNumberData [value] = betNumberData [value] - chipAmount;
+			}
+
+			if (betNumberData [value] < 0) {
+				betNumberData [value] = 0;
+			}
+		}
+	}
 	#endregion
+
+	[SerializeField] int[] rList_0_36;
+	[SerializeField] int[] rList_112;
+	[SerializeField] int[] rList_212;
+	[SerializeField] int[] rList_312;
+	[SerializeField] int[] rList_118;
+	[SerializeField] int[] rList_100;
+	[SerializeField] int[] rList_200;
+	[SerializeField] int[] rList_300;
+	[SerializeField] int[] rList_400;
+	[SerializeField] int[] rList_1936;
+	[SerializeField] int[] rList_2111;
+	[SerializeField] int[] rList_2211;
+	[SerializeField] int[] rList_2311;
 
 	#region FINALIZE BET RESULT AND REWARD
 
 	public void finalizeReward(int luckyNumber){
 		int netAMT = 0;
 		int finalReward = 0;
+
 		if(betNumberData.ContainsKey(luckyNumber)){
 			betNumberData.TryGetValue (luckyNumber, out netAMT);
-			finalReward = netAMT * 36;
-			Debug.LogError ("netAMT " + netAMT + " finalReward " + finalReward);
+			finalReward = finalReward + netAMT * 36;
+			Debug.LogError ("default netAMT " + netAMT + " finalReward " + finalReward);
+			netAMT = 0;
 		}
+
+		if (CurrentBetsList.Contains (112)) {
+
+			for (int i = 0; i < rList_112.Length; i++) {
+				if (luckyNumber == rList_112 [i]) {
+					betNumberData.TryGetValue (112, out netAMT);
+					finalReward = finalReward +netAMT * 3;
+					Debug.LogError ("112 netAMT " + netAMT + " finalReward " + finalReward);
+				}
+			}
+			netAMT = 0;
+		}  
+		if (CurrentBetsList.Contains (212)) {
+
+			for (int i = 0; i < rList_212.Length; i++) {
+				if (luckyNumber == rList_212 [i]) {
+					betNumberData.TryGetValue (212, out netAMT);
+					finalReward = finalReward + netAMT * 3;
+					Debug.LogError ("212 netAMT " + netAMT + " finalReward " + finalReward);
+				}
+			}
+			netAMT = 0;
+		}
+		if (CurrentBetsList.Contains (312)) {
+			for (int i = 0; i < rList_312.Length; i++) {
+				if (luckyNumber == rList_312 [i]) {
+					betNumberData.TryGetValue (312, out netAMT);
+					finalReward = finalReward + netAMT * 3;
+					Debug.LogError ("312 netAMT " + netAMT + " finalReward " + finalReward);
+				}
+			}
+			netAMT = 0;
+		} 
+		if (CurrentBetsList.Contains (118)) {
+			for (int i = 0; i < rList_118.Length; i++) {
+				if (luckyNumber == rList_118 [i]) {
+					betNumberData.TryGetValue (118, out netAMT);
+					finalReward =  finalReward + netAMT * 2;
+					Debug.LogError ("118 netAMT " + netAMT + " finalReward " + finalReward);
+				}
+			}
+			netAMT = 0;
+		}
+		if (CurrentBetsList.Contains (100)) {
+			for (int i = 0; i < rList_100.Length; i++) {
+				if (luckyNumber == rList_100 [i]) {
+					betNumberData.TryGetValue (100, out netAMT);
+					finalReward = finalReward + netAMT * 2;
+					Debug.LogError ("100 netAMT " + netAMT + " finalReward " + finalReward);
+				}
+			}
+			netAMT = 0;
+		}  
+		if (CurrentBetsList.Contains (200)) {
+
+			for (int i = 0; i < rList_200.Length; i++) {
+				if (luckyNumber == rList_200 [i]) {
+					betNumberData.TryGetValue (200, out netAMT);
+					finalReward = finalReward + netAMT * 2;
+					Debug.LogError ("200 netAMT " + netAMT + " finalReward " + finalReward);
+				}
+			}
+			netAMT = 0;
+		}  
+		if (CurrentBetsList.Contains (300)) {
+			for (int i = 0; i < rList_300.Length; i++) {
+				if (luckyNumber == rList_300 [i]) {
+					betNumberData.TryGetValue (300, out netAMT);
+					finalReward = finalReward + netAMT * 2;
+					Debug.LogError ("300 netAMT " + netAMT + " finalReward " + finalReward);
+				}
+			}
+			netAMT = 0;
+		} 
+		if (CurrentBetsList.Contains (400)) {
+			for (int i = 0; i < rList_400.Length; i++) {
+				if (luckyNumber == rList_400 [i]) {
+					betNumberData.TryGetValue (400, out netAMT);
+					finalReward = finalReward + netAMT * 2;
+					Debug.LogError ("400 netAMT " + netAMT + " finalReward " + finalReward);
+				}
+			}
+			netAMT = 0;
+		} 
+		if (CurrentBetsList.Contains (1936)) {
+			for (int i = 0; i < rList_1936.Length; i++) {
+				if (luckyNumber == rList_1936 [i]) {
+					betNumberData.TryGetValue (1936, out netAMT);
+					finalReward = finalReward + netAMT * 2;
+					Debug.LogError ("1936 netAMT " + netAMT + " finalReward " + finalReward);
+				}
+			}
+			netAMT = 0;
+		} 
+		if (CurrentBetsList.Contains (2111)) {
+			for (int i = 0; i < rList_2111.Length; i++) {
+				betNumberData.TryGetValue (2111, out netAMT);
+				if (luckyNumber == rList_2111 [i]) {
+					finalReward = finalReward + netAMT * 3;
+					Debug.LogError ("2111 netAMT " + netAMT + " finalReward " + finalReward);
+				}
+			}
+			netAMT = 0;
+		} 
+		if (CurrentBetsList.Contains (2211)) {
+
+			for (int i = 0; i < rList_2211.Length; i++) {
+				if (luckyNumber == rList_2211 [i]) {
+					betNumberData.TryGetValue (2211, out netAMT);
+					finalReward = finalReward + netAMT * 3;
+					Debug.LogError ("2211 netAMT " + netAMT + " finalReward " + finalReward);
+				}
+			}
+			netAMT = 0;
+		} 
+		if (CurrentBetsList.Contains (2311)) {
+			for (int i = 0; i < rList_2311.Length; i++) {
+				if (luckyNumber == rList_2311 [i]) {
+					betNumberData.TryGetValue (2311, out netAMT);
+					finalReward = finalReward + netAMT * 3;
+					Debug.LogError ("2311 netAMT " + netAMT + " finalReward " + finalReward);
+				}
+			}
+			netAMT = 0;
+		}
+
+		Debug.LogError (" finalReward " + finalReward);
+
+		CurrentBetsList.Clear ();
+		betNumberData.Clear ();
 	}
 
 	#endregion
+
+	bool isDeletable;
+
+	public void deleteToggle(GameObject btn){
+		if (!isDeletable) {
+			isDeletable = true;
+			toggleUI (btn, true);
+		} else {
+			isDeletable = false;
+			toggleUI (btn, false);
+		}
+	}
+
 
 	public List<int> local;
 	bool hasSelected;
 
 	System.Action action;
 
-	public void buttonClick (int value, Object go){
-	}
-
 	public void buttonClick (GameObject go){
 		go.transform.GetChild (0).gameObject.SetActive (true);
 		Debug.Log ("clicked");
 	}
 
+
+	void toggleUI(GameObject btn, bool toggleState){
+		if (toggleState) {
+			btn.GetComponent<Image> ().color = Color.black;
+		} else {
+			btn.GetComponent<Image> ().color = Color.white;
+		}
+	}
+
 	#region BET NUMBER BUTTONS
 	public void betNumberButton(int value){
-		selectedBetNumber (value);
+		if (!isDeletable) {
+			selectedBetNumber (value);
+		} else {
+			deleteSelectedBetNumber (value);
+		}
 		return;
 
+
+
+
+
+
+
+		//WASTE CODE HERE
 		if(GameHud.instance.gameState == GameState.RUNNING){
 			Debug.LogError ("TABLE IS RUNNING CAN'T BET NOW");
 			return;
@@ -194,72 +409,55 @@ public class GameButtonsHandler : MonoBehaviour
        // DeductUserAmount(this.chipAmount);
     }
 
+	public void MakeDoubleAmount(GameObject btn)
+	{
+
+		if (!isBetDouble) {
+			isBetDouble = true;	
+			toggleUI (btn, true);
+		} else {
+			isBetDouble = false;
+			toggleUI (btn, false);
+		}
+	}
+
+
+	public void ClearBet()
+	{
+		CurrentBetsList.Clear ();
+		chipAmount = 0;
+		betNumber = 0;
+		isBetDouble = false;
+		setPreviousAmount = false;
+		betNumbersList.Clear();
+		userBetAmountList.Clear();
+		betResultNumberList.Clear();
+		userBets.text = "";
+		totaleBet.text = "";
+		betDictionary.Clear ();
+		clearSelectedButton ();
+
+		Debug.LogError ("clear bet");
+
+		ClearLocalList ();
+
+		local.Clear ();
+		temp.Clear ();
+	}
+
+
+
+
+
+
+
+
+
 
     private List<int> localList = new List<int>();
     private int tempStoreBetnumberList = 0;
-    public void SetBetNumberButton(int betNumb)
-    {
-//        if (chipAmount <= 0) {
-//            return;
-//        }
-//
-//		if (betDictionary.Count > 0)
-//		{
-//			List<int> localKey = new List<int>(betDictionary.Keys); // if double click on same bet number then remove the bet
-//			for (int i = 0; i < localKey.Count; i++)
-//			{
-//				Debug.Log ("Local String " + localKey[i].ToString());
-//				if (localKey[i] == betNumb)
-//				{
-//					Debug.Log ("   :::: Local String " + localKey[i].ToString() + "   " + betNumb);
-//					for (int k = 0; k < betDictionary[betNumb].Count; k++)
-//					{
-//						AddUserAmount( betDictionary[i][k]);
-//						localList = localList.Distinct().ToList();
-//						localList.Remove(betDictionary[i][k]);
-//						betNumbersList.Remove(localKey[i]);
-//						betDictionary.Remove(betNumb);
-//						SetUserBetNumbers();
-//						break;
-//					}
-//				}
-//			}
-//		}
-//        this.betNumber = betNumb;
-//		Debug.LogError (this.betNumber);
-//		betNumbersList.Add(this.betNumber);
-//		Debug.LogError ("COUNT -- " + betNumbersList.Count);
-//		betNumbersList = betNumbersList.Distinct().ToList();
-//		Debug.LogError ("COUNTTTT -- " + betNumbersList.Count);
-//		localList.Add(this.betNumber);
-//		localList = localList.Distinct().ToList();
-//
-//		List<int> keys = new List<int>(betDictionary.Keys);
-//		foreach(int key in keys) {
-//			if (!betDictionary.ContainsKey (key)) {
-//				//add
-//				betDictionary.Add (key, new List<int> ());
-//			} else {
-//				betDictionary [key].Add (this.betNumber);
-//			}
-//		}
-//        DeductUserAmount(this.chipAmount);
 
-    }
 
-    public void MakeDoubleAmount()
-    {
-//		if (!isBetDouble && userTotalAmount > 2 * chipAmount && userBetAmountList.Count > 0)
-//        {
-//            chipAmount = 2 * chipAmount;
-//            DeductUserAmount(chipAmount);
-//            isBetDouble = true;
-//        }
-
-		if(!isBetDouble){
-			isBetDouble = true;	
-		}
-    }
 
     public void MakePreviousAmount()
     {
@@ -274,28 +472,6 @@ public class GameButtonsHandler : MonoBehaviour
         }
 
     }
-
-    public void ClearBet()
-    {
-	    chipAmount = 0;
-	    betNumber = 0;
-	    isBetDouble = false;
-	    setPreviousAmount = false;
-	    betNumbersList.Clear();
-	    userBetAmountList.Clear();
-	    betResultNumberList.Clear();
-		userBets.text = "";
-		totaleBet.text = "";
-		betDictionary.Clear ();
-		clearSelectedButton ();
-
-		Debug.LogError ("clear bet");
-
-		ClearLocalList ();
-
-		local.Clear ();
-		temp.Clear ();
-	}
 
 	void clearSelectedButton(){
 		for (int i = 0; i < allButtons.Count; i++) {

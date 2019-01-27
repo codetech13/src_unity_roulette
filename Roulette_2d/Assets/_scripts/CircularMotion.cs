@@ -82,9 +82,9 @@ public class CircularMotion : MonoBehaviour {
                 luckyNumber = pointsList[i].serialNumber;
 			}
 
-			Debug.LogError ("point " + i + " temp is the closest point" + " distance " + 
-				Vector3.Distance(pointsList[i].transform.position, transform.position) + "   cOunt ::: " +
-                pointsList[i].serialNumber);
+//			Debug.LogError ("point " + i + " temp is the closest point" + " distance " + 
+//				Vector3.Distance(pointsList[i].transform.position, transform.position) + "   cOunt ::: " +
+//                pointsList[i].serialNumber);
 		}
         FinalizeResult(luckyNumber);
 
