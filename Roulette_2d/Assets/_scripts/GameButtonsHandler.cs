@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 using UnityEngine.EventSystems;
+using System;
 
 public class GameButtonsHandler : MonoBehaviour
 {
@@ -39,10 +40,22 @@ public class GameButtonsHandler : MonoBehaviour
 	private void Start(){
 	    local = new List<int> ();
 		betDictionary = new Dictionary<int, List<int>> ();
+//		userTotalAmount = GameData.instance.localData.CurrencyDetail [0].currentAmount;
+
+		Int32.TryParse (GameData.instance.localData.CurrencyDetail [0].currentAmount, out userTotalAmount);
+		balanceText.text = userTotalAmount.ToString();
 	}
 
 
 	public int totalAmtOnBets = 0;
+
+	#region UI
+	void RefreshUI(int reward){
+		
+		balanceText.text = userTotalAmount.ToString();
+		userWiningText.text = reward.ToString ();
+	}
+	#endregion
 
 	#region BET AMMOUNT BUTTONS
 	int currentBetAmt;
@@ -103,18 +116,53 @@ public class GameButtonsHandler : MonoBehaviour
 		}
 		chipAmount = tempChipAmount;
 		Debug.LogError ("betN " + value + " amt " + betNumberData [value]);
+
+		userBets.text = "";
+		for (int i = 0; i < CurrentBetsList.Count; i++) {
+			userBets.text += CurrentBetsList [i];
+		}
+			
+
+		balanceText.text = " " + userTotalAmount.ToString();
+
+		betUI ();
+	}
+
+	void betUI(){
+		int temp = 0;
+		totaleBet.text = " ";
+		for (int i = 0; i < CurrentBetsList.Count; i++) {
+			temp += betNumberData [CurrentBetsList[i]];
+		}
+
+		totaleBet.text = temp.ToString();
 	}
 
 	void deleteSelectedBetNumber(int value){
 		if(betNumberData.ContainsKey(value)){
 			if (betNumberData [value] > 0) {
 				betNumberData [value] = betNumberData [value] - chipAmount;
+				AddUserAmount (chipAmount);
 			}
 
 			if (betNumberData [value] < 0) {
 				betNumberData [value] = 0;
 			}
 		}
+
+		userBets.text = "";
+		for (int i = 0; i < CurrentBetsList.Count; i++) {
+			userBets.text += " " + CurrentBetsList [i];
+		}
+
+		int temp = 0;
+		totaleBet.text = "";
+		for (int i = 0; i < CurrentBetsList.Count; i++) {
+			temp += betNumberData [CurrentBetsList[i]];
+		}
+		totaleBet.text = temp.ToString();
+
+		balanceText.text = userTotalAmount.ToString();
 	}
 	#endregion
 
@@ -137,6 +185,8 @@ public class GameButtonsHandler : MonoBehaviour
 	public void finalizeReward(int luckyNumber){
 		int netAMT = 0;
 		int finalReward = 0;
+
+		finalBets.text = "Lucky Number : " + luckyNumber;
 
 		if(betNumberData.ContainsKey(luckyNumber)){
 			betNumberData.TryGetValue (luckyNumber, out netAMT);
@@ -271,9 +321,10 @@ public class GameButtonsHandler : MonoBehaviour
 		}
 
 		Debug.LogError (" finalReward " + finalReward);
-
+		RefreshUI (finalReward);
 		CurrentBetsList.Clear ();
 		betNumberData.Clear ();
+		ClearBet ();
 	}
 
 	#endregion
@@ -436,7 +487,9 @@ public class GameButtonsHandler : MonoBehaviour
 		totaleBet.text = "";
 		betDictionary.Clear ();
 		clearSelectedButton ();
-
+		userWiningText.text = "";
+		balanceText.text = GameData.instance.localData.CurrencyDetail [0].currentAmount;
+		finalBets.text = "";
 		Debug.LogError ("clear bet");
 
 		ClearLocalList ();
