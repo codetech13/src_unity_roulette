@@ -124,6 +124,8 @@ public class GameButtonsHandler : MonoBehaviour
 			
 
 		balanceText.text = " " + userTotalAmount.ToString();
+		EventSystem.current.currentSelectedGameObject.transform.GetChild (0).gameObject.SetActive (true);
+		EventSystem.current.currentSelectedGameObject.transform.GetChild (0).GetChild(0).GetComponent<Text>().text = betNumberData [value].ToString();
 
 		betUI ();
 	}
@@ -134,7 +136,6 @@ public class GameButtonsHandler : MonoBehaviour
 		for (int i = 0; i < CurrentBetsList.Count; i++) {
 			temp += betNumberData [CurrentBetsList[i]];
 		}
-
 		totaleBet.text = temp.ToString();
 	}
 
@@ -163,6 +164,11 @@ public class GameButtonsHandler : MonoBehaviour
 		totaleBet.text = temp.ToString();
 
 		balanceText.text = userTotalAmount.ToString();
+
+		EventSystem.current.currentSelectedGameObject.transform.GetChild (0).gameObject.SetActive (true);
+		EventSystem.current.currentSelectedGameObject.transform.GetChild (0).GetChild(0).GetComponent<Text>().text = betNumberData [value].ToString();
+
+
 	}
 	#endregion
 
@@ -476,6 +482,8 @@ public class GameButtonsHandler : MonoBehaviour
 	public void ClearBet()
 	{
 		CurrentBetsList.Clear ();
+		betNumberData.Clear ();
+		CurrentBetsList.Clear ();
 		chipAmount = 0;
 		betNumber = 0;
 		isBetDouble = false;
@@ -486,7 +494,7 @@ public class GameButtonsHandler : MonoBehaviour
 		userBets.text = "";
 		totaleBet.text = "";
 		betDictionary.Clear ();
-		clearSelectedButton ();
+//		clearSelectedButton ();
 		userWiningText.text = "";
 		balanceText.text = GameData.instance.localData.CurrencyDetail [0].currentAmount;
 		finalBets.text = "";
@@ -496,11 +504,34 @@ public class GameButtonsHandler : MonoBehaviour
 
 		local.Clear ();
 		temp.Clear ();
+
+		for (int i = 0; i < allButtons.Count; i++) {
+			allButtons [i].transform.GetChild (0).GetChild (0).GetComponent<Text> ().text = "";
+			allButtons [i].transform.GetChild (0).gameObject.SetActive (false);
+		}
 	}
 
 
 
+	void resetUI(){
+//		for (int i = 0; i < rList_0_36.Count; i++) {
+//			
+//		}
 
+//		rList_0_36;
+//		 rList_112;
+//		rList_212;
+//		 rList_312;
+//		 rList_118;
+//		 rList_100;
+//		 rList_200;
+//		rList_300;
+//		rList_400;
+//		rList_1936;
+//		rList_2111;
+//		rList_2211;
+//		rList_2311;
+	}
 
 
 
@@ -527,9 +558,9 @@ public class GameButtonsHandler : MonoBehaviour
     }
 
 	void clearSelectedButton(){
-		for (int i = 0; i < allButtons.Count; i++) {
-			allButtons [i].SetActive (false);
-		}
+//		for (int i = 0; i < allButtons.Count; i++) {
+//			allButtons [i].SetActive (false);
+//		}
 	}
 
     public void ClearLocalList()
