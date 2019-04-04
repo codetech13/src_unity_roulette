@@ -49,8 +49,9 @@ public class SplashScript : MonoBehaviour {
 		yield return null;
 		//put initialization hold here
 
-		SceneManager.LoadScene ("GameScene");
-	}
+		//SceneManager.LoadScene ("GameScene");
+        SceneManager.LoadScene("MainMenu");
+    }
 
 
 	IEnumerator changeSplashImage(){

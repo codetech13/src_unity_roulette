@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Pathfinding.Serialization.JsonFx;
+using UnityEngine.SceneManagement;
 
 public class LogInScript : MonoBehaviour {
 
@@ -99,9 +100,10 @@ public class LogInScript : MonoBehaviour {
 		message = responseData.message;
 //		SplashScript.instance.showMessage ();
 		if (message.Contains ("Data Found")) {
-//			LogInScript.instance.RegisteredSuccessfully ();
-			GameHud.instance.logInSuccessfully();
-		} else if (message.Contains ("already registered")) {
+            //			LogInScript.instance.RegisteredSuccessfully ();
+            //GameHud.instance.logInSuccessfully();
+            SceneManager.LoadScene("GameScene");
+        } else if (message.Contains ("already registered")) {
 			Debug.LogError ("ALREADY REGISTERED");
 		} else {
 			Debug.LogError ("USER NOT REGISTERED");
@@ -110,7 +112,7 @@ public class LogInScript : MonoBehaviour {
 
 		//set local data in gamedata
 		GameData.instance.localData = responseData.data;
-	}
+    }
 
 	public void showRegistrationPanel(){
 		registrationPanel.SetActive (true);

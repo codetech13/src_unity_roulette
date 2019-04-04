@@ -52,6 +52,7 @@ public class FunCardGameUI : MonoBehaviour
         cardhistory.Clear();
         winnerhistory.Clear();
         ResetValues();
+        totalAmount = int.Parse(GameData.instance.localData.CurrencyDetail[1].currentAmount);
         SetTexts();
         timeCopy = time;
        // StartCoroutine(StartMyCoroutine());
@@ -72,25 +73,6 @@ public class FunCardGameUI : MonoBehaviour
     public void OnChipButtonCick(int chipAmount)
     {
         currentBetAmount = chipAmount;
-
-        /* if (totalAmount > chipAmount && !isChipSelected)
-        {
-            isChipSelected = true;
-            totalAmount = totalAmount - chipAmount;
-            totalAmountOnBet = totalAmountOnBet + chipAmount;
-        }
-
-        if (isChipSelected)
-        {
-            if (totalAmount > chipAmount)
-            {
-                totalAmount = totalAmount + totalAmountOnBet;
-                totalAmountOnBet = chipAmount;
-                totalAmount = totalAmount - chipAmount;
-            }
-
-        }
-        */
         chipGO = EventSystem.current.currentSelectedGameObject;
         Debug.Log(chipGO.name, chipGO);
         chipImage = chipGO.GetComponent<Image>();
@@ -207,8 +189,6 @@ public class FunCardGameUI : MonoBehaviour
         cardAnim.SwapTransform(isPlayerFirst);
         cardAnim.startAnimation = true;
         cardAnim.stop = false;
-        //totalAmountOnBet = tempNO;
-        //totalAmount = totalAmount - totalAmountOnBet;
         SetTexts();
 
     }
@@ -228,34 +208,12 @@ public class FunCardGameUI : MonoBehaviour
             return;
         }
 
-        /* tempValue++;
-         if (isCardSelected) {
-             tempNO = tempValue * totalAmountOnBet;
-             if (totalAmount > tempNO)
-             {
-
-                 // totalAmount = totalAmount - totalAmountOnBet;
-             }
-             else
-             {
-                 totalAmountOnBet = tempValue * totalAmountOnBet;
-             }
-         }*/
-
-   
-    
-
-
-
         if (go == null)
         {
             go = EventSystem.current.currentSelectedGameObject;
-          //  Debug.Log(go.name, go);
             goImage = go.transform.GetChild(0).GetComponent<Image>();
-           // Debug.Log("goImage        " + goImage.name, goImage.gameObject);
             goImage.gameObject.SetActive(true);
             goImage.sprite = chipSprite;
-            //   Debug.Log("BBBB");
             totalAmountOnBet = totalAmountOnBet + currentBetAmount;
             totalAmount = totalAmount - currentBetAmount;
         }
@@ -285,16 +243,13 @@ public class FunCardGameUI : MonoBehaviour
         SetTexts();
         if (!isCardSelected)
         {
-            //tempNO = 0;
+            
             selectedCard = card;
             isCardSelected = true;
-            tap++;
         }
     }
-    int tap = 0;
     public bool isAndar = false;
     private string andarOrBahar = "";
-    [SerializeField]private int tempValue = 0; //for clicking many times on same button
     public void AndarOrBahar(string name)
     {
         if (name == "ANDAR")

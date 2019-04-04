@@ -15,9 +15,12 @@ public class GameData : MonoBehaviour {
 //	[SerializeField] GameResult gameResult;
 
 	void Awake(){
-		instance = this;
+        if (instance == null)
+        {
+            instance = this;
 
-		DontDestroyOnLoad (this);
+            DontDestroyOnLoad(this);
+        }
 	}
 
 	public void postResult(int luckyNumber, bool iswinner){

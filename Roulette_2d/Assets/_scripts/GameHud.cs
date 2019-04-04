@@ -31,11 +31,13 @@ public class GameHud : MonoBehaviour {
             spinWheelBtn.SetActive(false);
         }
 
-		LoginPanel.SetActive (true);
+		//LoginPanel.SetActive (true);
     }
 
     private void Start()
     {
+
+        ModePanelScript.instance.SetTexts();
         this.betNumber.text = "PLEASE SELECT BET NUMBER";
     }
 
@@ -103,8 +105,15 @@ public class GameHud : MonoBehaviour {
 	}
 
 	public void logInSuccessfully(){
-		logInSCreen.SetActive (false);
+
+        
+        logInSCreen.SetActive (false);
 	}
+
+    public void Close() {
+        ModePanelScript.instance.myPanel.SetActive(true);
+        ModePanelScript.instance.mode1.SetActive(false);
+    }
 
 }
 [System.Serializable]
