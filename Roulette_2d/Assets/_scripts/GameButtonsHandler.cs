@@ -76,6 +76,7 @@ public class GameButtonsHandler : MonoBehaviour
 	[SerializeField] List<int> CurrentBetsList = new List<int> ();
 
 	void selectedBetNumber(int value){
+		Debug.LogError ("Clciked vlaue " +  value);
 		int tempChipAmount = chipAmount;
 		if(GameHud.instance.gameState == GameState.RUNNING){
 			Debug.LogError ("TABLE IS RUNNING CAN'T BET NOW");
@@ -119,7 +120,48 @@ public class GameButtonsHandler : MonoBehaviour
 
 		userBets.text = "";
 		for (int i = 0; i < CurrentBetsList.Count; i++) {
-			userBets.text += CurrentBetsList [i];
+			
+				//118 = 1-18
+				//100 = even
+				//200 = red
+				//300 = black
+				//400 = odd
+				//1936 = 19-36
+				//2111 = 2 to 1 first row
+				//2211 = 2 to 1 second row
+				//2311 = 2 to 1 third row
+				//9876
+
+			if (CurrentBetsList [i] == 100) {
+				userBets.text += ", even";
+			}else if(CurrentBetsList [i] == 118){
+				userBets.text += ", 1-18";
+			}else if(CurrentBetsList [i] == 200){
+				userBets.text += ", red";
+			}else if(CurrentBetsList [i] == 300){
+				userBets.text += ", black";
+			}else if(CurrentBetsList [i] == 400){
+				userBets.text += ", odd";
+			}else if(CurrentBetsList [i] == 1936){
+				userBets.text += ", 19-36";
+			}else if(CurrentBetsList [i] == 2111){
+				userBets.text += ", 2 to 1(I)";
+			}else if(CurrentBetsList [i] == 2211){
+				userBets.text += ", 2 to 1(II)";
+			}else if(CurrentBetsList [i] == 2311){
+				userBets.text += ", 2 to 1(III)";
+			}else if(CurrentBetsList [i] == 112){
+				userBets.text += ", I-12";
+			}else if(CurrentBetsList [i] == 212){
+				userBets.text += ", II-12";
+			}else if(CurrentBetsList [i] == 312){
+				userBets.text += ", II-12";
+			}else {
+				userBets.text += ", " + CurrentBetsList [i].ToString();
+			}
+
+//			userBets.text += CurrentBetsList [i];
+
 		}
 			
 
