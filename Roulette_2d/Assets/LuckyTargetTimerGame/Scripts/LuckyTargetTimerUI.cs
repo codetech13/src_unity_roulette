@@ -8,12 +8,13 @@ using UnityEngine.SceneManagement;
 public class LuckyTargetTimerUI : MonoBehaviour {
     public static LuckyTargetTimerUI instance;
     public GameObject takeBtnGO;
-    private bool isChipSelected = false;
+    public bool isChipSelected = false;
     private bool isBetSlected = false;
     private bool isBetDouble = false;
     private List<int> history = new List<int>();
     public int totalAmount = 20000;
     public int totalAmountOnBet = 0;
+    public int currentAmountOnBet = 0;
     public int selectedBetNumber;
     public int winningAmount = 0;
     public int winNumber;
@@ -45,6 +46,12 @@ public class LuckyTargetTimerUI : MonoBehaviour {
 
     public void OnSpinButtonClick()
     {
+        Debug.Log("keys count   "+betNumberANDAmountDict.Keys.Count);
+        for (int i = 0; i < betNumberANDAmountDict.Keys.Count; i++)
+        {
+            Debug.Log("<color=green>KEYS ARE  </color>" + betNumberANDAmountDict[i]);
+        }
+
         if (isBetSlected && isChipSelected)
         {
             SpinWheel.instance.SpinTheWheel();
@@ -80,11 +87,12 @@ public class LuckyTargetTimerUI : MonoBehaviour {
     }
 
 
-    int currentBetAmount = 0;
+    public int currentBetAmount = 0;
     private GameObject go = null;
     Text tempText;
     public void SelectBetNumber(int betNumber)
     {
+        return;
         if (!isChipSelected)
         {
             return;
@@ -99,7 +107,7 @@ public class LuckyTargetTimerUI : MonoBehaviour {
         if (go == null) {
             go = EventSystem.current.currentSelectedGameObject;
             Image newBtn = go.GetComponent<Image>();
-            newBtn.color = newColor;
+           // newBtn.color = newColor;
 
 
             totalAmountOnBet = totalAmountOnBet + currentBetAmount;
@@ -119,11 +127,11 @@ public class LuckyTargetTimerUI : MonoBehaviour {
         {
             Debug.Log("HJHJHJHJ");
             Image button = go.GetComponent<Image>();
-            button.color = oldColor;
+           // button.color = oldColor;
 
             go = EventSystem.current.currentSelectedGameObject;
             Image newBtn = go.GetComponent<Image>();
-            newBtn.color = newColor;
+            //newBtn.color = newColor;
 
            
 
@@ -177,6 +185,12 @@ public class LuckyTargetTimerUI : MonoBehaviour {
         totalAmount = totalAmount + totalAmountOnBet;
         totalAmountOnBet = 0;
         currentBetAmount = 0;
+        BetNumber[] bets = (BetNumber[])GameObject.FindObjectsOfType<BetNumber>();
+        for (int i = 0; i < bets.Length; i++)
+        {
+            bets[i].OnCLear();
+        }
+        betNumberList.Clear();
         SetTexts();
 
     }
@@ -195,7 +209,7 @@ public class LuckyTargetTimerUI : MonoBehaviour {
         totalBetTexts.text = totalAmountOnBet.ToString();
         winningText.text = winningAmount.ToString();
     }
-
+    private int strorePrize = 0;
     public void Result(int amount , int betNumberRslt)
     {
         if (selectedBetNumber == betNumberRslt)
@@ -205,24 +219,29 @@ public class LuckyTargetTimerUI : MonoBehaviour {
         if (isBetWon)
         {
             takeBtnGO.SetActive(true);
-            totalAmount = totalAmount + amount;
             winningAmount = amount;
+            winNumber = betNumberRslt;
         }
         else
         {
             winningAmount = 0;
+
+            winNumber = betNumberRslt;
+            if (GameData.instance != null)
+                GameData.instance.PostLuckyGameResult(winNumber.ToString(), totalAmountOnBet, selectedBetNumber.ToString(), false);
+
+            SetTexts();
+            ResetValues();
         }
-        winNumber = betNumberRslt;
-        if(GameData.instance != null)
-        GameData.instance.PostLuckyGameResult(winNumber.ToString(), totalAmountOnBet, selectedBetNumber.ToString(), isBetWon);
-        SetTexts();
-        ResetValues();
+     
         if (history.Count == historyText.Length)
         {
             history.RemoveAt(0);
         }
         history.Add(betNumberRslt);
         ShowHistory();
+        tempText.text = "";
+        totalBetTexts.text = "";
 
     }
 
@@ -245,7 +264,23 @@ public class LuckyTargetTimerUI : MonoBehaviour {
 
     public void TakeBtnClick()
     {
-      
+        totalAmount = totalAmount + winningAmount;
+            
+
+        if (GameData.instance != null) { 
+            GameData.instance.PostLuckyGameResult(winNumber.ToString(), totalAmountOnBet, selectedBetNumber.ToString(), true);
+    }
+        SetTexts();
+        ResetValues();
+    }
+
+    public List<int> betNumberList = new List<int>();
+    public Dictionary<int, int> betNumberANDAmountDict = new Dictionary<int, int>();
+
+    public void SetTotalAmountOnBet(int betamount)
+    {
+        totalAmountOnBet = totalAmountOnBet + betamount;
+        totalBetTexts.text = totalAmountOnBet.ToString();
     }
 
 }

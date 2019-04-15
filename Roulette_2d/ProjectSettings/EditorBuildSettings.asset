@@ -8,8 +8,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SplashScene.unity
     guid: fbd5cbfe8962bd64a8690ac84773d06e
-  - enabled: 1
-    path: Assets/Scenes/MainMenu.unity
+  - enabled: 0
+    path: Assets/__DELETED_GUID_Trash/d533467de6142f34e8367d4e8463bb94
     guid: d533467de6142f34e8367d4e8463bb94
   - enabled: 1
     path: Assets/Scenes/GameScene.unity
@@ -26,7 +26,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/FUN GAME PNG/Scene/FunCardGame.unity
     guid: 5bf8f3623ba816840b89db3bdf692e8b
-  - enabled: 1
+  - enabled: 0
     path: Assets/LuckyTargetTimerGame/Scenes/LuckyTargetTimerReal.unity
     guid: dd2b8c86fcf279d4c86890818ff13a4c
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: aca231b6a18b69e45a95060437b62d9d
   m_configObjects: {}
