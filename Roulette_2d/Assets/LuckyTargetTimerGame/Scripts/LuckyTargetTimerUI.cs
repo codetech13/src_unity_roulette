@@ -4,12 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 public class LuckyTargetTimerUI : MonoBehaviour {
     public static LuckyTargetTimerUI instance;
     public GameObject takeBtnGO;
+    public GameObject spinBtnGO;
     public bool isChipSelected = false;
-    private bool isBetSlected = false;
+    [SerializeField]private bool isBetSlected = false;
     private bool isBetDouble = false;
     private List<int> history = new List<int>();
     public int totalAmount = 20000;
@@ -44,17 +46,16 @@ public class LuckyTargetTimerUI : MonoBehaviour {
         takeBtnGO.SetActive(false);
     }
 
+
+    private List<int> keys = new List<int>();
     public void OnSpinButtonClick()
     {
-        Debug.Log("keys count   "+betNumberANDAmountDict.Keys.Count);
-        for (int i = 0; i < betNumberANDAmountDict.Keys.Count; i++)
-        {
-            Debug.Log("<color=green>KEYS ARE  </color>" + betNumberANDAmountDict[i]);
-        }
-
+        Debug.Log("ISBETSELECTED " + isBetSlected);
+        Debug.Log("ISCHIPSELECTED " + isChipSelected);
         if (isBetSlected && isChipSelected)
         {
             SpinWheel.instance.SpinTheWheel();
+            keys = betNumberANDAmountDict.Keys.ToList();
         }
     }
 
@@ -89,7 +90,7 @@ public class LuckyTargetTimerUI : MonoBehaviour {
 
     public int currentBetAmount = 0;
     private GameObject go = null;
-    Text tempText;
+   // Text tempText;
     public void SelectBetNumber(int betNumber)
     {
         return;
@@ -114,11 +115,11 @@ public class LuckyTargetTimerUI : MonoBehaviour {
             totalAmount = totalAmount - currentBetAmount;
 
            // tempText.gameObject.SetActive(false);
-            tempText = go.transform.GetChild(2).GetComponent<Text>();
+         //   tempText = go.transform.GetChild(2).GetComponent<Text>();
 
-            tempText.gameObject.SetActive(true);
-            tempText.text = "";
-            tempText.text = totalAmountOnBet.ToString();
+           // tempText.gameObject.SetActive(true);
+          //  tempText.text = "";
+            //tempText.text = totalAmountOnBet.ToString();
 
 
             Debug.Log("XOXOXOXO");
@@ -140,11 +141,11 @@ public class LuckyTargetTimerUI : MonoBehaviour {
 
          //   if (isBetSlected)
            // {
-                tempText.gameObject.SetActive(false);
-                tempText = go.transform.GetChild(2).GetComponent<Text>();
-                tempText.gameObject.SetActive(true);
-                tempText.text = "";
-                tempText.text = totalAmountOnBet.ToString();
+               // tempText.gameObject.SetActive(false);
+                //tempText = go.transform.GetChild(2).GetComponent<Text>();
+               // tempText.gameObject.SetActive(true);
+                //tempText.text = "";
+               // tempText.text = totalAmountOnBet.ToString();
           //  }
 
         }
@@ -170,9 +171,9 @@ public class LuckyTargetTimerUI : MonoBehaviour {
             totalAmountOnBet = 2 * totalAmountOnBet;
             totalAmount = totalAmount - totalAmountOnBet;
 
-            tempText.gameObject.SetActive(true);
-            tempText.text = "";
-            tempText.text = totalAmountOnBet.ToString();
+           // tempText.gameObject.SetActive(true);
+           // tempText.text = "";
+           // tempText.text = totalAmountOnBet.ToString();
             SetTexts();
         }
 
@@ -212,14 +213,24 @@ public class LuckyTargetTimerUI : MonoBehaviour {
     private int strorePrize = 0;
     public void Result(int amount , int betNumberRslt)
     {
-        if (selectedBetNumber == betNumberRslt)
+        for (int i = 0; i < keys.Count; i++)
         {
-            isBetWon = true;
+            if (keys[i] == betNumberRslt)
+            {
+                isBetWon = true;
+                winningAmount = winningAmount + betNumberANDAmountDict[keys[i]];
+            }
+            else
+            {
+
+            }
         }
+
         if (isBetWon)
         {
             takeBtnGO.SetActive(true);
-            winningAmount = amount;
+            spinBtnGO.SetActive(false);
+            // winningAmount = amount;
             winNumber = betNumberRslt;
         }
         else
@@ -240,8 +251,9 @@ public class LuckyTargetTimerUI : MonoBehaviour {
         }
         history.Add(betNumberRslt);
         ShowHistory();
-        tempText.text = "";
+       // tempText.text = "";
         totalBetTexts.text = "";
+
 
     }
 
@@ -272,6 +284,14 @@ public class LuckyTargetTimerUI : MonoBehaviour {
     }
         SetTexts();
         ResetValues();
+        spinBtnGO.SetActive(true);
+        takeBtnGO.SetActive(false);
+        winningAmount = 0;
+        BetNumber[] bets = (BetNumber[])GameObject.FindObjectsOfType<BetNumber>();
+        for (int i = 0; i < bets.Length; i++)
+        {
+            bets[i].OnCLear();
+        }
     }
 
     public List<int> betNumberList = new List<int>();
@@ -281,6 +301,7 @@ public class LuckyTargetTimerUI : MonoBehaviour {
     {
         totalAmountOnBet = totalAmountOnBet + betamount;
         totalBetTexts.text = totalAmountOnBet.ToString();
+        isBetSlected = true;
     }
 
 }

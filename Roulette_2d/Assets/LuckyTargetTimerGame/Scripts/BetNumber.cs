@@ -48,9 +48,12 @@ public class BetNumber : MonoBehaviour {
         }
         else
         {
-            if ((betAmount + luckyTargetTimerUI.currentBetAmount) <= luckyTargetTimerUI.totalAmount)
+            if (luckyTargetTimerUI.totalAmountOnBet <= luckyTargetTimerUI.totalAmount)
             {
                
+            }else if (luckyTargetTimerUI.currentBetAmount <= luckyTargetTimerUI.totalAmount)
+            {
+
             }
             else
             {

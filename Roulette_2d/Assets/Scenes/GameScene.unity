@@ -85470,7 +85470,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2058269495}
-        m_MethodName: OnClickMode3
+        m_MethodName: OnClickMode4
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -94227,7 +94227,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2058269495}
-        m_MethodName: OnClickMode4
+        m_MethodName: OnClickMode3
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
